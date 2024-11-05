@@ -912,6 +912,24 @@ public class LimelightHelpers {
     }
 
     /**
+     * Gets the horizontal offset from the principal pixel/point to the target in degrees.  This is the most accurate 2d metric if you are using a calibrated camera and you don't need adjustable crosshair functionality.
+     * @param limelightName Name of the Limelight camera ("" for default)
+     * @return Horizontal offset angle in degrees
+     */
+    public static double getTXNC(String limelightName) {
+        return getLimelightNTDouble(limelightName, "txnc");
+    }
+
+    /**
+     * Gets the vertical offset from the principal pixel/point to the target in degrees. This is the most accurate 2d metric if you are using a calibrated camera and you don't need adjustable crosshair functionality.
+     * @param limelightName Name of the Limelight camera ("" for default)
+     * @return Vertical offset angle in degrees
+     */
+    public static double getTYNC(String limelightName) {
+        return getLimelightNTDouble(limelightName, "tync");
+    }
+
+    /**
      * Gets the target area as a percentage of the image (0-100%).
      * @param limelightName Name of the Limelight camera ("" for default) 
      * @return Target area percentage (0-100)
