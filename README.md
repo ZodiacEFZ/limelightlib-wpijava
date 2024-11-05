@@ -5,5 +5,5 @@ https://github.com/LimelightVision/limelightlib-wpijava/releases
 https://docs.limelightvision.io/docs/docs-limelight/apis/limelight-lib
 
 ## JavaDocs
-limelightlib-wpijava-reference.limelightvision.io
+https://limelightlib-wpijava-reference.limelightvision.io
 
