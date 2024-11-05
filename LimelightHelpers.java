@@ -540,6 +540,7 @@ public class LimelightHelpers {
         public double avgTagArea;
 
         public RawFiducial[] rawFiducials; 
+        public boolean isMegaTag2;
 
         /**
          * Instantiates a PoseEstimate object with default values
@@ -553,11 +554,12 @@ public class LimelightHelpers {
             this.avgTagDist = 0;
             this.avgTagArea = 0;
             this.rawFiducials = new RawFiducial[]{};
+            this.isMegaTag2 = false;
         }
 
         public PoseEstimate(Pose2d pose, double timestampSeconds, double latency, 
             int tagCount, double tagSpan, double avgTagDist, 
-            double avgTagArea, RawFiducial[] rawFiducials) {
+            double avgTagArea, RawFiducial[] rawFiducials, boolean isMegaTag2) {
 
             this.pose = pose;
             this.timestampSeconds = timestampSeconds;
@@ -567,6 +569,7 @@ public class LimelightHelpers {
             this.avgTagDist = avgTagDist;
             this.avgTagArea = avgTagArea;
             this.rawFiducials = rawFiducials;
+            this.isMegaTag2 = isMegaTag2;
         }
 
     }
@@ -666,7 +669,7 @@ public class LimelightHelpers {
         return inData[position];
     }
 
-    private static PoseEstimate getBotPoseEstimate(String limelightName, String entryName) {
+    private static PoseEstimate getBotPoseEstimate(String limelightName, String entryName, boolean isMegaTag2) {
         DoubleArrayEntry poseEntry = LimelightHelpers.getLimelightDoubleArrayEntry(limelightName, entryName);
         
         TimestampedDoubleArray tsValue = poseEntry.getAtomic();
@@ -708,7 +711,7 @@ public class LimelightHelpers {
             }
         }
     
-        return new PoseEstimate(pose, adjustedTimestamp, latency, tagCount, tagSpan, tagDist, tagArea, rawFiducials);
+        return new PoseEstimate(pose, adjustedTimestamp, latency, tagCount, tagSpan, tagDist, tagArea, rawFiducials, isMegaTag2);
     }
 
     /**
@@ -802,6 +805,7 @@ public class LimelightHelpers {
         System.out.printf("Tag Span: %.2f meters%n", pose.tagSpan);
         System.out.printf("Average Tag Distance: %.2f meters%n", pose.avgTagDist);
         System.out.printf("Average Tag Area: %.2f%% of image%n", pose.avgTagArea);
+        System.out.printf("Is MegaTag2: %b%n", pose.isMegaTag2);
         System.out.println();
     
         if (pose.rawFiducials == null || pose.rawFiducials.length == 0) {
@@ -822,6 +826,10 @@ public class LimelightHelpers {
             System.out.printf("  Ambiguity: %.2f%n", fiducial.ambiguity);
             System.out.println();
         }
+    }
+
+    public static Boolean validPoseEstimate(PoseEstimate pose) {
+        return pose != null && pose.rawFiducials != null && pose.rawFiducials.length != 0;
     }
 
     public static NetworkTable getLimelightNTTable(String tableName) {
@@ -1210,7 +1218,7 @@ public class LimelightHelpers {
      * @return
      */
     public static PoseEstimate getBotPoseEstimate_wpiBlue(String limelightName) {
-        return getBotPoseEstimate(limelightName, "botpose_wpiblue");
+        return getBotPoseEstimate(limelightName, "botpose_wpiblue", false);
     }
 
     /**
@@ -1221,7 +1229,7 @@ public class LimelightHelpers {
      * @return
      */
     public static PoseEstimate getBotPoseEstimate_wpiBlue_MegaTag2(String limelightName) {
-        return getBotPoseEstimate(limelightName, "botpose_orb_wpiblue");
+        return getBotPoseEstimate(limelightName, "botpose_orb_wpiblue", true);
     }
 
     /**
@@ -1245,7 +1253,7 @@ public class LimelightHelpers {
      * @return
      */
     public static PoseEstimate getBotPoseEstimate_wpiRed(String limelightName) {
-        return getBotPoseEstimate(limelightName, "botpose_wpired");
+        return getBotPoseEstimate(limelightName, "botpose_wpired", false);
     }
 
     /**
@@ -1255,7 +1263,7 @@ public class LimelightHelpers {
      * @return
      */
     public static PoseEstimate getBotPoseEstimate_wpiRed_MegaTag2(String limelightName) {
-        return getBotPoseEstimate(limelightName, "botpose_orb_wpired");
+        return getBotPoseEstimate(limelightName, "botpose_orb_wpired", true);
     }
 
     /**
