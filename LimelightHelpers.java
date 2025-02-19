@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
@@ -570,6 +571,21 @@ public class LimelightHelpers {
             this.avgTagArea = avgTagArea;
             this.rawFiducials = rawFiducials;
             this.isMegaTag2 = isMegaTag2;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj) return true;
+            if (obj == null || getClass() != obj.getClass()) return false;
+            PoseEstimate that = (PoseEstimate) obj;
+            return Double.compare(that.timestampSeconds, timestampSeconds) == 0
+                && Double.compare(that.latency, latency) == 0
+                && tagCount == that.tagCount
+                && Double.compare(that.tagSpan, tagSpan) == 0
+                && Double.compare(that.avgTagDist, avgTagDist) == 0
+                && Double.compare(that.avgTagArea, avgTagArea) == 0
+                && pose.equals(that.pose)
+                && Arrays.equals(rawFiducials, that.rawFiducials);
         }
 
     }
