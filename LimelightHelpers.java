@@ -488,6 +488,21 @@ public class LimelightHelpers {
             this.distToRobot = distToRobot;
             this.ambiguity = ambiguity;
         }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj) return true;
+            if (obj == null || getClass() != obj.getClass()) return false;
+            RawFiducial other = (RawFiducial) obj;
+            return id == other.id &&
+                Double.compare(txnc, other.txnc) == 0 &&
+                Double.compare(tync, other.tync) == 0 &&
+                Double.compare(ta, other.ta) == 0 &&
+                Double.compare(distToCamera, other.distToCamera) == 0 &&
+                Double.compare(distToRobot, other.distToRobot) == 0 &&
+                Double.compare(ambiguity, other.ambiguity) == 0;
+        }
+
     }
 
     /**
@@ -578,8 +593,9 @@ public class LimelightHelpers {
             if (this == obj) return true;
             if (obj == null || getClass() != obj.getClass()) return false;
             PoseEstimate that = (PoseEstimate) obj;
-            return Double.compare(that.timestampSeconds, timestampSeconds) == 0
-                && Double.compare(that.latency, latency) == 0
+            // We don't compare the timestampSeconds as it isn't relevant for equality and makes
+            // unit testing harder
+            return Double.compare(that.latency, latency) == 0
                 && tagCount == that.tagCount
                 && Double.compare(that.tagSpan, tagSpan) == 0
                 && Double.compare(that.avgTagDist, avgTagDist) == 0
