@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
@@ -487,6 +488,21 @@ public class LimelightHelpers {
             this.distToRobot = distToRobot;
             this.ambiguity = ambiguity;
         }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj) return true;
+            if (obj == null || getClass() != obj.getClass()) return false;
+            RawFiducial other = (RawFiducial) obj;
+            return id == other.id &&
+                Double.compare(txnc, other.txnc) == 0 &&
+                Double.compare(tync, other.tync) == 0 &&
+                Double.compare(ta, other.ta) == 0 &&
+                Double.compare(distToCamera, other.distToCamera) == 0 &&
+                Double.compare(distToRobot, other.distToRobot) == 0 &&
+                Double.compare(ambiguity, other.ambiguity) == 0;
+        }
+
     }
 
     /**
@@ -570,6 +586,22 @@ public class LimelightHelpers {
             this.avgTagArea = avgTagArea;
             this.rawFiducials = rawFiducials;
             this.isMegaTag2 = isMegaTag2;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj) return true;
+            if (obj == null || getClass() != obj.getClass()) return false;
+            PoseEstimate that = (PoseEstimate) obj;
+            // We don't compare the timestampSeconds as it isn't relevant for equality and makes
+            // unit testing harder
+            return Double.compare(that.latency, latency) == 0
+                && tagCount == that.tagCount
+                && Double.compare(that.tagSpan, tagSpan) == 0
+                && Double.compare(that.avgTagDist, avgTagDist) == 0
+                && Double.compare(that.avgTagArea, avgTagArea) == 0
+                && pose.equals(that.pose)
+                && Arrays.equals(rawFiducials, that.rawFiducials);
         }
 
     }
